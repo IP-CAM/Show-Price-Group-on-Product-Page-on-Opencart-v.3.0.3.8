@@ -322,6 +322,9 @@ class ControllerProductProduct extends Controller {
 				);
 			}
 
+			$discountBlock = $this->discountFormat($discounts, $product_info);
+			$data['discountBlock'] = $discountBlock;
+
 			$data['options'] = array();
 
 			foreach ($this->model_catalog_product->getProductOptions($this->request->get['product_id']) as $option) {
@@ -682,5 +685,46 @@ class ControllerProductProduct extends Controller {
 
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
+	}
+
+	public function discountFormat($discounts, $product_info) {
+		$discountFormatArr = array_reduce($discounts, function($result, $item) {
+			$result[$item['quantity']] = $item;
+			
+			return $result;
+		}, []);
+
+		ksort($discountFormatArr);
+
+		foreach($discountFormatArr as $key => $item) {
+			$nextEle = $this->nextElement($discountFormatArr, $key);
+			$discountFormatArr[$key]['next_quantity'] = false;
+			if($nextEle) {
+				$discountFormatArr[$key]['next_quantity'] = $nextEle['quantity'];
+			}
+			$discountFormatArr[$key]['formatted_price'] = $this->currency->format($this->tax->calculate($item['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+		}
+
+		$data['discounts'] = $discountFormatArr;
+
+		// echo "<pre>"; var_dump($discountFormatArr);
+
+		return $this->load->view('product/price_qty_groups/info', $data);
+	}
+
+	private function nextElement($array, $currentKey)
+	{
+		if (!isset($array[$currentKey])) {
+			return false;
+		}
+		$nextElement = false;
+		foreach ($array as $key => $item) {
+			$nextElement = next($array);
+			if ($key == $currentKey) {
+				break;
+			}
+		}
+	
+		return $nextElement;
 	}
 }

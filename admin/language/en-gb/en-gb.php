@@ -113,6 +113,7 @@ $_['tab_data']                      = 'Data';
 $_['tab_description']               = 'Description';
 $_['tab_design']                    = 'Design';
 $_['tab_discount']                  = 'Discount';
+$_['tab_price_groups']              = "Price Groups"; 
 $_['tab_documentation']             = 'Documentation';
 $_['tab_general']                   = 'General';
 $_['tab_history']                   = 'History';
