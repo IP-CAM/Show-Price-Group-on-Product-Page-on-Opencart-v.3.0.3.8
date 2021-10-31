@@ -11,6 +11,10 @@ system/cache/
 system/logs/
 
 system/storage/
+.htaccess.txt
+index.php
+php.ini
+robots.txt
 
 # vQmod log files
 vqmod/logs/*
