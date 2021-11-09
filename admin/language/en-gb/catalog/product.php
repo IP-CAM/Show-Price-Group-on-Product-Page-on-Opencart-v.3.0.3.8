@@ -16,6 +16,9 @@ $_['text_option_value']      = 'Option Value';
 $_['text_percent']           = 'Percentage';
 $_['text_amount']            = 'Fixed Amount';
 $_['text_keyword']           = 'Do not use spaces, instead replace spaces with - and make sure the SEO URL is globally unique.';
+$_['text_unit']              = 'Unit';
+$_['text_square']            = 'Square';
+$_['text_length']            = 'Length';
 
 // Column
 $_['column_name']            = 'Product Name';
@@ -82,6 +85,8 @@ $_['entry_tag']              = 'Product Tags';
 $_['entry_reward']           = 'Reward Points';
 $_['entry_layout']           = 'Layout Override';
 $_['entry_recurring']        = 'Recurring Profile';
+$_['entry_group_type']       = "Group Type";
+$_['entry_group_value']      = "Group Value";
 
 // Help
 $_['help_sku']               = 'Stock Keeping Unit';

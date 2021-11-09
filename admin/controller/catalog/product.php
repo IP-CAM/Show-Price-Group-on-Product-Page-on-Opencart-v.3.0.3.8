@@ -3,6 +3,9 @@ class ControllerCatalogProduct extends Controller {
 	private $error = array();
 
 	public function index() {
+		$this->load->model('vltech/price_group');
+		$this->model_vltech_price_group->setup();
+
 		$this->load->language('catalog/product');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -1010,6 +1013,8 @@ class ControllerCatalogProduct extends Controller {
 				'quantity'          => $product_discount['quantity'],
 				'priority'          => $product_discount['priority'],
 				'price'             => $product_discount['price'],
+				'group_type'		=> $product_discount['group_type'],
+				'group_value'		=> $product_discount['group_value'],
 				'date_start'        => ($product_discount['date_start'] != '0000-00-00') ? $product_discount['date_start'] : '',
 				'date_end'          => ($product_discount['date_end'] != '0000-00-00') ? $product_discount['date_end'] : ''
 			);
