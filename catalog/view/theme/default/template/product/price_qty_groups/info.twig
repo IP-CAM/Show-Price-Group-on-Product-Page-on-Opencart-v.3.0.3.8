@@ -2,10 +2,10 @@
 {% for discount in discounts %}
     <div class="col-sm-4 col-xs-6">
         <label for="p-discount-price" class="discount-text">
-            {% if discount.next_quantity != false %}
-                {{ discount.quantity }} - {{ discount.next_quantity }} {{ text_pieces }}
+            {% if discount.next_group_value != false %}
+                {{ discount.group_value }} - {{ discount.next_group_value }} {{ discount.formatted_type }}
             {% else %}
-                >= {{ discount.quantity }} {{ text_pieces }}
+                >= {{ discount.group_value }} {{ discount.formatted_type }}
             {% endif %}
         </label>
         <p id="p-discount-price">{{ discount.formatted_price }}</p>

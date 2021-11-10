@@ -699,9 +699,25 @@ class ControllerProductProduct extends Controller {
 		foreach($discountFormatArr as $key => $item) {
 			$nextEle = $this->nextElement($discountFormatArr, $key);
 			$discountFormatArr[$key]['next_quantity'] = false;
+			$discountFormatArr[$key]['next_group_value'] = false;
 			if($nextEle) {
 				$discountFormatArr[$key]['next_quantity'] = $nextEle['quantity'];
+				$discountFormatArr[$key]['next_group_value'] = $nextEle['group_value'];
 			}
+
+			switch($discountFormatArr[$key]['group_type']) {
+				case 'unit':
+					$discountFormatArr[$key]['formatted_type'] = $this->language->get('text_pieces');
+					break;
+				case 'square':
+					$discountFormatArr[$key]['formatted_type'] = $this->language->get('m2');
+					break;
+				case 'length':
+					$discountFormatArr[$key]['formatted_type'] = $this->language->get('metre');
+					break;
+				default: break;
+			}
+			
 			$discountFormatArr[$key]['formatted_price'] = $this->currency->format($this->tax->calculate($item['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 		}
 

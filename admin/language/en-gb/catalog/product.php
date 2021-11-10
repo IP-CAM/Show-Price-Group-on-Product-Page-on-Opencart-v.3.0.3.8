@@ -17,8 +17,8 @@ $_['text_percent']           = 'Percentage';
 $_['text_amount']            = 'Fixed Amount';
 $_['text_keyword']           = 'Do not use spaces, instead replace spaces with - and make sure the SEO URL is globally unique.';
 $_['text_unit']              = 'Unit';
-$_['text_square']            = 'Square';
-$_['text_length']            = 'Length';
+$_['text_square']            = 'Square (m2)';
+$_['text_length']            = 'Length (m)';
 
 // Column
 $_['column_name']            = 'Product Name';
