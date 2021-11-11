@@ -866,7 +866,7 @@
 
                     {% set discount_row = 0 %}
                     {% for product_discount in product_discounts %}
-                      <tr id="discount-row{{ discount_row }}">
+                      <tr id="discount-row{{ discount_row }}" class="price-group-row">
                         <td class="text-left"><select name="product_discount[{{ discount_row }}][customer_group_id]" class="form-control">
                             {% for customer_group in customer_groups %}
                               {% if customer_group.customer_group_id == product_discount.customer_group_id %}
@@ -1519,7 +1519,7 @@
   var discount_row = {{ discount_row }};
 
   function addDiscount() {
-	  html = '<tr id="discount-row' + discount_row + '">';
+	  html = '<tr id="discount-row' + discount_row + '" class="price-group-row">';
 	  html += '  <td class="text-left"><select name="product_discount[' + discount_row + '][customer_group_id]" class="form-control">';
     {% for customer_group in customer_groups %}
 	  html += '    <option value="{{ customer_group.customer_group_id }}">{{ customer_group.name|escape('js') }}</option>';
@@ -1528,7 +1528,7 @@
 	  html += '  <td class="text-right"><input type="text" name="product_discount[' + discount_row + '][quantity]" value="" placeholder="{{ entry_quantity }}" class="form-control pg-quantity" /></td>';
 	  // html += '  <td class="text-right"><input type="text" name="product_discount[' + discount_row + '][priority]" value="" placeholder="{{ entry_priority }}" class="form-control" /></td>';
 	  html += '  <td class="text-left"><select name="product_discount[' + discount_row + '][group_type]" class="form-control pg-type">';
-	  html += '    <option value="unit">{{ text_unit|escape('js') }}</option>';
+	  html += '    <option value="unit" selected="selected">{{ text_unit|escape('js') }}</option>';
 	  html += '    <option value="square">{{ text_square|escape('js') }}</option>';
 	  html += '    <option value="length">{{ text_length|escape('js') }}</option>';
 	  html += '  </select></td>';
@@ -1646,16 +1646,31 @@
   //--></script>
 
   <script type="text/javascript"><!--
-    function convertQuantity() {
+    function convertQuantity(element) {
       var length_class_id = parseInt('{{ length_class_id }}', 10);
       var length = parseFloat('{{ length }}', 10);
       var width = parseFloat('{{ width }}', 10);
+      var type = element.closest('.price-group-row').find('.pg-type').val();
+
+      console.log(type);
       console.log(length_class_id);
       console.log(length);
       console.log(width);
     }
 
-    convertQuantity();
+    $('.pg-type').change(function() {
+      var row = $(this).closest('.price-group-row');
+      row.find('.pg-quantity').val(0);
+      row.find('.pg-value').val(0);
+    });
+
+    $('.pg-value').keyup(function() {
+      convertQuantity($(this));
+    });
+
+    $('.pg-quantity').keyup(function() {
+      convertQuantity($(this));
+    });
   //--></script>
 </div>
 {{ footer }} 
