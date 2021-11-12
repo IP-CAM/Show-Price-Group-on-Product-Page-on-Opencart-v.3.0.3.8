@@ -1646,30 +1646,81 @@
   //--></script>
 
   <script type="text/javascript"><!--
-    function convertQuantity(element) {
-      var length_class_id = parseInt('{{ length_class_id }}', 10);
+    function convertQuantityFromValue(element) {
+      var row = element.closest('.price-group-row');
+      var length_class_id = parseInt('{{ length_class_id }}', 10); // 1: cm, 2: mm, 3: m
       var length = parseFloat('{{ length }}', 10);
       var width = parseFloat('{{ width }}', 10);
-      var type = element.closest('.price-group-row').find('.pg-type').val();
+      var type = row.find('.pg-type').val();
+      var value = element.val();
+      var quantity = 0;
 
-      console.log(type);
-      console.log(length_class_id);
-      console.log(length);
-      console.log(width);
+      if(type === 'unit') {
+        quantity = value;
+      }
+
+      if(type === 'square') {
+        var rate = 1;
+        if(length_class_id == 1) rate = 10000;
+        if(length_class_id == 2) rate = 1000000;
+        let area = length * width;
+        quantity = Math.ceil(value * rate / area);
+      }
+
+      if(type === 'length') {
+        var rate = 1;
+        if(length_class_id == 1) rate = 100;
+        if(length_class_id == 2) rate = 1000;
+        quantity = Math.ceil(value * rate / length);
+      }
+
+      row.find('.pg-quantity').val(quantity);
+    }
+
+    function convertValueFromQuantity(element) {
+      var row = element.closest('.price-group-row');
+      var length_class_id = parseInt('{{ length_class_id }}', 10); // 1: cm, 2: mm, 3: m
+      var length = parseFloat('{{ length }}', 10);
+      var width = parseFloat('{{ width }}', 10);
+      var type = row.find('.pg-type').val();
+      var quantity = element.val();
+      var value = 0;
+
+      if(type === 'unit') {
+        value = quantity;
+      }
+
+      if(type === 'square') {
+        var rate = 1;
+        if(length_class_id == 1) rate = 10000;
+        if(length_class_id == 2) rate = 1000000;
+        let area = length * width;
+        value = Math.floor(quantity * area / rate);
+      }
+
+      if(type === 'length') {
+        var rate = 1;
+        if(length_class_id == 1) rate = 100;
+        if(length_class_id == 2) rate = 1000;
+        value = Math.floor(quantity * length / rate);
+      }
+
+      row.find('.pg-value').val(value);
     }
 
     $('.pg-type').change(function() {
-      var row = $(this).closest('.price-group-row');
-      row.find('.pg-quantity').val(0);
-      row.find('.pg-value').val(0);
+      var type = $(this).val();
+      $('.pg-quantity').val(0);
+      $('.pg-value').val(0);
+      $('.pg-type').val(type);
     });
 
     $('.pg-value').keyup(function() {
-      convertQuantity($(this));
+      convertQuantityFromValue($(this));
     });
 
     $('.pg-quantity').keyup(function() {
-      convertQuantity($(this));
+      convertValueFromQuantity($(this));
     });
   //--></script>
 </div>
